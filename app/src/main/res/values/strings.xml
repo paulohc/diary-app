@@ -5,5 +5,7 @@
     <string name="auth_title">Welcome back</string>
     <string name="auth_subtitle">Please sign in to continue.</string>
     <string name="auth_google_logo">Google Logo</string>
-    <string name="home_logout">Logout</string>
+    <string name="home_hamburger_icon">Hamburger Menu Icon</string>
+    <string name="home_date_icon">Date Icon</string>
+    <string name="home_diary_icon">New Diary Icon</string>
 </resources>
