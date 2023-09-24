@@ -29,7 +29,12 @@ fun SetupNavGraph(startDestination: String, navController: NavHostController) {
                 navController.navigate(Screen.Home.buildRoute())
             }
         )
-        homeRoute()
+        homeRoute(
+            navigateToAuthentication = {
+                navController.popBackStack()
+                navController.navigate(Screen.Authentication.buildRoute())
+            }
+        )
         writeRoute()
     }
 }
@@ -79,8 +84,26 @@ fun NavGraphBuilder.authenticationRoute(
     }
 }
 
-fun NavGraphBuilder.homeRoute() {
+fun NavGraphBuilder.homeRoute(
+    navigateToAuthentication: () -> Unit
+) {
     composable(screen = Screen.Home) {
+        val scope = rememberCoroutineScope()
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Button(onClick = {
+                scope.launch(Dispatchers.IO) {
+                    App.create(BuildConfig.APP_ID).currentUser?.logOut()
+                }
+                navigateToAuthentication()
+            }) {
+                Text(text = stringResource(id = R.string.home_logout))
+            }
+        }
     }
 }
 
