@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id ("io.realm.kotlin")
 }
 
 android {
@@ -76,4 +77,14 @@ dependencies {
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.2")
+
+    // One-Tap Sign in with Google
+    implementation("com.github.stevdza-san:OneTapCompose:1.0.7")
+
+    // Message Bar Compose
+    implementation("com.github.stevdza-san:MessageBarCompose:1.0.5")
+
+    // Mongo DB Realm
+    implementation("io.realm.kotlin:library-sync:1.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 }
