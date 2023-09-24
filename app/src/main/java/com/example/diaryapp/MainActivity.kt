@@ -1,22 +1,19 @@
 package com.example.diaryapp
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import android.os.*
+import androidx.activity.*
+import androidx.activity.compose.*
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.compose.rememberNavController
-import com.example.diaryapp.navigation.Screen
-import com.example.diaryapp.navigation.SetupNavGraph
-import com.example.diaryapp.ui.theme.DiaryAppTheme
+import androidx.core.view.*
+import androidx.navigation.compose.*
+import com.example.diaryapp.navigation.*
+import com.example.diaryapp.ui.theme.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             DiaryAppTheme {
                 val navController = rememberNavController()

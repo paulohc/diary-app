@@ -1,19 +1,13 @@
 package com.example.diaryapp.ui.theme
 
-import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import android.app.*
+import android.os.*
+import androidx.compose.foundation.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.platform.*
+import androidx.core.view.*
 
 private val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
@@ -102,6 +96,22 @@ fun DiaryAppTheme(
             window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
+    }
+
+    SideEffect {
+        val window = (view.context as Activity).window
+
+        window.statusBarColor = Color.Transparent.toArgb()
+        window.navigationBarColor = Color.Transparent.toArgb()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
+
+        val windowsInsetsController = WindowCompat.getInsetsController(window, view)
+
+        windowsInsetsController.isAppearanceLightStatusBars = !darkTheme
+        windowsInsetsController.isAppearanceLightNavigationBars = !darkTheme
     }
 
     MaterialTheme(
