@@ -34,6 +34,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -76,7 +77,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
 
     // Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.2")
+    implementation("androidx.navigation:navigation-compose:2.7.3")
 
     // One-Tap Sign in with Google
     implementation("com.github.stevdza-san:OneTapCompose:1.0.7")
@@ -87,4 +88,7 @@ dependencies {
     // Mongo DB Realm
     implementation("io.realm.kotlin:library-sync:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+
+    // Desugar JDK
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 }
