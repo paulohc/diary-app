@@ -5,7 +5,7 @@ import io.realm.kotlin.types.*
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
-class Diary: RealmObject {
+open class Diary: RealmObject {
     @PrimaryKey
     var _id: ObjectId = ObjectId.invoke()
     var ownerId: String = ""

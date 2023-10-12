@@ -9,6 +9,7 @@ import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.diaryapp.BuildConfig
+import com.example.diaryapp.data.repository.MongoDB
 import com.example.diaryapp.presentation.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel
@@ -109,6 +110,10 @@ fun NavGraphBuilder.homeRoute(
             },
             navigateToWrite = navigateToWrite,
         )
+
+        LaunchedEffect(Unit) {
+            MongoDB.configureTheReam()
+        }
 
         DisplayAlertDialog(
             title = "Sign Out",
