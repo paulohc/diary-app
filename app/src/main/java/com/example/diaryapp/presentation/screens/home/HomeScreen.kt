@@ -8,12 +8,14 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.diaryapp.R
 import com.example.diaryapp.data.repository.Diaries
 import com.example.diaryapp.util.RequestState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
@@ -24,47 +26,55 @@ fun HomeScreen(
     navigateToWrite: () -> Unit,
 ) {
     var padding by remember { mutableStateOf(PaddingValues()) }
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     NavigationDrawer(
         drawerState = drawerState,
         onSignOutClicked = onSignOutClicked,
     ) {
-        Scaffold(topBar = {
-            HomeTopBar(onMenuClicked = onMenuClicked)
-        }, floatingActionButton = {
-            FloatingActionButton(
-                modifier = Modifier.padding(end = padding.calculateEndPadding(LayoutDirection.Ltr)),
-                onClick = navigateToWrite
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(id = R.string.home_diary_icon),
-                    tint = MaterialTheme.colorScheme.onSurface,
+        Scaffold(
+            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+            topBar = {
+                HomeTopBar(
+                    scrollBehavior = scrollBehavior,
+                    onMenuClicked = onMenuClicked,
                 )
-            }
-        }, content = {
-            padding = it
-            when (diaries) {
-                is RequestState.Success -> {
-                    HomeContent(paddingValues = it, diarieNotes = diaries.data, onClick = {})
-                }
-
-                is RequestState.Error -> {
-                    EmptyPage(
-                        title = "Error", subtitle = "${diaries.error.message}"
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    modifier = Modifier.padding(end = padding.calculateEndPadding(LayoutDirection.Ltr)),
+                    onClick = navigateToWrite
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = stringResource(id = R.string.home_diary_icon),
+                        tint = MaterialTheme.colorScheme.onSurface,
                     )
                 }
-
-                is RequestState.Loading -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
+            },
+            content = {
+                padding = it
+                when (diaries) {
+                    is RequestState.Success -> {
+                        HomeContent(paddingValues = it, diarieNotes = diaries.data, onClick = {})
                     }
-                }
 
-                else -> {}
-            }
-        })
+                    is RequestState.Error -> {
+                        EmptyPage(
+                            title = "Error", subtitle = "${diaries.error.message}"
+                        )
+                    }
+
+                    is RequestState.Loading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+
+                    else -> {}
+                }
+            })
     }
 }
 

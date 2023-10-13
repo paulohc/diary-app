@@ -57,8 +57,9 @@ fun HomeContent(
 fun DateHeader(localDate: LocalDate) {
     Row(
         modifier = Modifier
-            .padding(vertical = 14.dp)
-            .background(MaterialTheme.colorScheme.surface),
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(horizontalAlignment = Alignment.End) {

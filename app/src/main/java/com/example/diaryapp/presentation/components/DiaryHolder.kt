@@ -1,6 +1,8 @@
 package com.example.diaryapp.presentation.components
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -73,7 +75,15 @@ fun DiaryHolder(diary: Diary, onClick: (String) -> Unit) {
                         }
                     )
                 }
-                AnimatedVisibility(visible = galleryOpened) {
+                AnimatedVisibility(
+                    visible = galleryOpened,
+                    enter = fadeIn() + expandVertically(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioMediumBouncy,
+                            stiffness = Spring.StiffnessLow,
+                        )
+                    )
+                ) {
                     Column(modifier = Modifier.padding(all = 14.dp)) {
                         Gallery(images = diary.images)
                     }
