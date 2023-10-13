@@ -11,15 +11,19 @@ import androidx.compose.ui.*
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.diaryapp.R
+import com.example.diaryapp.data.repository.Diaries
+import com.example.diaryapp.util.RequestState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
+    diaries: Diaries,
     drawerState: DrawerState,
     onMenuClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
     navigateToWrite: () -> Unit,
 ) {
+    var padding by remember { mutableStateOf(PaddingValues()) }
     NavigationDrawer(
         drawerState = drawerState,
         onSignOutClicked = onSignOutClicked,
@@ -27,14 +31,40 @@ fun HomeScreen(
         Scaffold(topBar = {
             HomeTopBar(onMenuClicked = onMenuClicked)
         }, floatingActionButton = {
-            FloatingActionButton(onClick = navigateToWrite) {
+            FloatingActionButton(
+                modifier = Modifier.padding(end = padding.calculateEndPadding(LayoutDirection.Ltr)),
+                onClick = navigateToWrite
+            ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
                     contentDescription = stringResource(id = R.string.home_diary_icon),
                     tint = MaterialTheme.colorScheme.onSurface,
                 )
             }
-        }) {}
+        }, content = {
+            padding = it
+            when (diaries) {
+                is RequestState.Success -> {
+                    HomeContent(paddingValues = it, diarieNotes = diaries.data, onClick = {})
+                }
+
+                is RequestState.Error -> {
+                    EmptyPage(
+                        title = "Error", subtitle = "${diaries.error.message}"
+                    )
+                }
+
+                is RequestState.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                else -> {}
+            }
+        })
     }
 }
 
@@ -64,13 +94,10 @@ fun NavigationDrawer(
                             )
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(
-                                text = "Sign Out",
-                                color = MaterialTheme.colorScheme.onSurface
+                                text = "Sign Out", color = MaterialTheme.colorScheme.onSurface
                             )
                         }
-                    },
-                    selected = false,
-                    onClick = onSignOutClicked
+                    }, selected = false, onClick = onSignOutClicked
                 )
             }
         },
