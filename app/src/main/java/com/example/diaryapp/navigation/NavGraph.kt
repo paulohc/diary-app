@@ -1,6 +1,8 @@
 package com.example.diaryapp.navigation
 
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
@@ -10,11 +12,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.diaryapp.BuildConfig
 import com.example.diaryapp.data.repository.MongoDB
+import com.example.diaryapp.model.Diary
+import com.example.diaryapp.model.Mood
 import com.example.diaryapp.presentation.components.DisplayAlertDialog
 import com.example.diaryapp.presentation.screens.auth.AuthenticationScreen
 import com.example.diaryapp.presentation.screens.auth.AuthenticationViewModel
 import com.example.diaryapp.presentation.screens.home.HomeScreen
 import com.example.diaryapp.presentation.screens.home.HomeViewModel
+import com.example.diaryapp.presentation.screens.write.WriteScreen
 import com.example.diaryapp.util.RequestState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
@@ -48,7 +53,11 @@ fun SetupNavGraph(
             },
             onDataLoaded = onDataLoaded,
         )
-        writeRoute()
+        writeRoute(
+            onBackPressed = {
+                navController.popBackStack()
+            }
+        )
     }
 }
 
@@ -158,7 +167,18 @@ fun NavGraphBuilder.homeRoute(
     }
 }
 
-fun NavGraphBuilder.writeRoute() {
+@OptIn(ExperimentalFoundationApi::class)
+fun NavGraphBuilder.writeRoute(
+    onBackPressed: () -> Unit,
+) {
     composable(screen = Screen.Write) {
+        val pagerState = rememberPagerState(pageCount = { Mood.values().size })
+
+        WriteScreen(
+            selectedDiary = null,
+            pagerState = pagerState,
+            onDeleteConfirmed = {},
+            onBackPressed = onBackPressed,
+        )
     }
 }
