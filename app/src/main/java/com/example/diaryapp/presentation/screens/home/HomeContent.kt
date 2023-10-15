@@ -22,10 +22,10 @@ import java.time.LocalDate
 @Composable
 fun HomeContent(
     paddingValues: PaddingValues,
-    diarieNotes: Map<LocalDate, List<Diary>>,
+    diaryNotes: Map<LocalDate, List<Diary>>,
     onClick: (String) -> Unit,
 ) {
-    if (diarieNotes.isNotEmpty()) {
+    if (diaryNotes.isNotEmpty()) {
         LazyColumn(
             modifier = Modifier
                 .padding(horizontal = 24.dp)
@@ -34,7 +34,7 @@ fun HomeContent(
                 .padding(start = paddingValues.calculateStartPadding(LayoutDirection.Ltr))
                 .padding(end = paddingValues.calculateEndPadding(LayoutDirection.Ltr)),
         ) {
-            diarieNotes.forEach { (localDate, diaries) ->
+            diaryNotes.forEach { (localDate, diaries) ->
                 stickyHeader(key = localDate) {
                     DateHeader(localDate = localDate)
                 }

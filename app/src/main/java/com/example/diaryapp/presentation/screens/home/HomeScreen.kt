@@ -16,7 +16,6 @@ import com.example.diaryapp.data.repository.Diaries
 import com.example.diaryapp.util.RequestState
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     diaries: Diaries,
@@ -24,6 +23,7 @@ fun HomeScreen(
     onMenuClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
     navigateToWrite: () -> Unit,
+    navigateToWriteWithArgs: (String) -> Unit,
 ) {
     var padding by remember { mutableStateOf(PaddingValues()) }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -55,7 +55,11 @@ fun HomeScreen(
                 padding = it
                 when (diaries) {
                     is RequestState.Success -> {
-                        HomeContent(paddingValues = it, diarieNotes = diaries.data, onClick = {})
+                        HomeContent(
+                            paddingValues = it,
+                            diaryNotes = diaries.data,
+                            onClick = navigateToWriteWithArgs
+                        )
                     }
 
                     is RequestState.Error -> {

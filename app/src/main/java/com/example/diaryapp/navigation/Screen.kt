@@ -28,7 +28,7 @@ abstract class AbstractScreen(
         val parameterList = parameters
             .entries
             .joinToString(separator = "$") { entry ->
-                "${entry.key}={${entry.value}}"
+                "${entry.key}=${entry.value}"
             }
         return "$routePrefix?$parameterList"
     }
@@ -50,8 +50,8 @@ sealed class Screen(
             },
         ),
     ) {
-        fun passDiaryId(diaryId: String) {
-            buildRoute(mapOf(DIARY_ID to diaryId))
+        fun passDiaryId(diaryId: String): String {
+            return buildRoute(mapOf(DIARY_ID to diaryId))
         }
     }
 }
