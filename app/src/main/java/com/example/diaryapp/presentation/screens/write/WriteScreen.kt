@@ -13,12 +13,13 @@ import com.example.diaryapp.model.Mood
 @Composable
 fun WriteScreen(
     uiState: UiState,
-    selectedDiary: Diary?,
+    moodName: () -> String,
     pagerState: PagerState,
     onTitleChanged: (String) -> Unit,
     onDescriptionChanged: (String) -> Unit,
     onDeleteConfirmed: () -> Unit,
     onBackPressed: () -> Unit,
+    onSaveClicked: (Diary) -> Unit,
 ) {
     LaunchedEffect(uiState.mood) {
         pagerState.scrollToPage(Mood.valueOf(uiState.mood.name).ordinal)
@@ -26,19 +27,22 @@ fun WriteScreen(
     Scaffold(
         topBar = {
             WriteTopBar(
-                selectedDiary = selectedDiary,
+                selectedDiary = uiState.selectedDiary,
+                moodName = moodName,
                 onDeleteConfirmed = onDeleteConfirmed,
                 onBackPressed = onBackPressed,
             )
         },
         content = {
                   WriteContent(
+                      uiState = uiState,
                       pagerState = pagerState,
                       title = uiState.title,
                       onTitleChanged = onTitleChanged,
                       description = uiState.description,
                       onDescriptionChanged = onDescriptionChanged,
                       paddingValues = it,
+                      onSaveClicked = onSaveClicked,
                   )
         },
     )

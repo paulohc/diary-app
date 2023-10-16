@@ -1,9 +1,11 @@
 package com.example.diaryapp.model
 
+import com.example.diaryapp.util.toRealmInstant
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.types.*
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
+import java.time.Instant
 
 open class Diary: RealmObject {
     @PrimaryKey
@@ -13,5 +15,5 @@ open class Diary: RealmObject {
     var title: String = ""
     var description: String = ""
     var images: RealmList<String> = realmListOf()
-    var date: RealmInstant = RealmInstant.from(System.currentTimeMillis(), 0)
+    var date: RealmInstant = Instant.now().toRealmInstant()
 }

@@ -3,6 +3,7 @@ package com.example.diaryapp.presentation.screens.write
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
 import com.example.diaryapp.data.repository.MongoDB
+import com.example.diaryapp.model.Diary
 import com.example.diaryapp.model.Mood
 import com.example.diaryapp.navigation.ParameterIds
 import com.example.diaryapp.util.RequestState
@@ -11,6 +12,7 @@ import org.mongodb.kbson.ObjectId
 
 data class UiState(
     val selectedDiaryId: String? = null,
+    val selectedDiary: Diary? = null,
     val title: String = "",
     val description: String = "",
     val mood: Mood = Mood.Neutral,
@@ -42,6 +44,7 @@ class WriteViewModel(
                 )
                 if (diary is RequestState.Success) {
                     withContext(Dispatchers.Main) {
+                        setSelectedDiary(diary = diary.data)
                         setTitle(title = diary.data.title)
                         setDescription(description = diary.data.description)
                         setMood(mood = Mood.valueOf(diary.data.mood))
@@ -49,6 +52,10 @@ class WriteViewModel(
                 }
             }
         }
+    }
+
+    private fun setSelectedDiary(diary: Diary) {
+        uiState = uiState.copy(selectedDiary = diary)
     }
 
     fun setTitle(title: String) {
@@ -59,7 +66,26 @@ class WriteViewModel(
         uiState = uiState.copy(description = description)
     }
 
-    fun setMood(mood: Mood) {
+    private fun setMood(mood: Mood) {
         uiState = uiState.copy(mood = mood)
+    }
+
+    fun insertDiary(
+        diary: Diary,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = MongoDB.addNewDiary(diary = diary)
+            if (result is RequestState.Success) {
+                withContext(Dispatchers.Main) {
+                    onSuccess()
+                }
+            } else if (result is RequestState.Error) {
+                withContext(Dispatchers.Main) {
+                    onError(result.error.message.toString())
+                }
+            }
+        }
     }
 }

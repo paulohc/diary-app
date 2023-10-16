@@ -180,15 +180,23 @@ fun NavGraphBuilder.writeRoute(
         val viewModel: WriteViewModel = viewModel()
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState(pageCount = { Mood.values().size })
+        val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
 
         WriteScreen(
             uiState = uiState,
-            selectedDiary = null,
+            moodName = { Mood.values()[pageNumber].name },
             pagerState = pagerState,
             onTitleChanged = viewModel::setTitle,
             onDescriptionChanged = viewModel::setDescription,
             onDeleteConfirmed = {},
             onBackPressed = onBackPressed,
+            onSaveClicked = {
+                viewModel.insertDiary(
+                    diary = it.apply { mood = Mood.values()[pageNumber].name },
+                    onSuccess = { onBackPressed() },
+                    onError = {},
+                )
+            }
         )
     }
 }

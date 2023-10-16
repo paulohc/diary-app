@@ -12,4 +12,5 @@ interface MongoRepository {
     fun configureTheReam()
     fun getAllDiaries(): Flow<Diaries>
     fun getSelectedDiary(diaryId: ObjectId): RequestState<Diary>
+    suspend fun addNewDiary(diary: Diary): RequestState<Diary>
 }
