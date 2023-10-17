@@ -13,7 +13,7 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.*
 import com.example.diaryapp.R
 import com.example.diaryapp.data.repository.Diaries
-import com.example.diaryapp.util.RequestState
+import com.example.diaryapp.model.RequestState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
