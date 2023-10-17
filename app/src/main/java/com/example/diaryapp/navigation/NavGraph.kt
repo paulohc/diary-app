@@ -189,6 +189,7 @@ fun NavGraphBuilder.writeRoute(
             onTitleChanged = viewModel::setTitle,
             onDescriptionChanged = viewModel::setDescription,
             onDeleteConfirmed = {},
+            onDateTimeUpdated = viewModel::updateTime,
             onBackPressed = onBackPressed,
             onSaveClicked = {
                 viewModel.upsertDiary(

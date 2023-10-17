@@ -7,8 +7,11 @@ import com.example.diaryapp.model.Diary
 import com.example.diaryapp.model.Mood
 import com.example.diaryapp.navigation.ParameterIds
 import com.example.diaryapp.util.RequestState
+import com.example.diaryapp.util.toRealmInstant
+import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.*
 import org.mongodb.kbson.ObjectId
+import java.time.ZonedDateTime
 
 data class UiState(
     val selectedDiaryId: String? = null,
@@ -16,6 +19,7 @@ data class UiState(
     val title: String = "",
     val description: String = "",
     val mood: Mood = Mood.Neutral,
+    val updatedDateTime: RealmInstant? = null
 )
 
 class WriteViewModel(
@@ -71,6 +75,10 @@ class WriteViewModel(
         uiState = uiState.copy(mood = mood)
     }
 
+    fun updateTime(zonedDateTime: ZonedDateTime) {
+        uiState = uiState.copy(updatedDateTime = zonedDateTime.toInstant().toRealmInstant())
+    }
+
     fun upsertDiary(
         diary: Diary,
         onSuccess: () -> Unit,
@@ -90,7 +98,12 @@ class WriteViewModel(
         onSuccess: () -> Unit,
         onError: (String) -> Unit,
     ) {
-        val result = MongoDB.insertNewDiary(diary = diary)
+        val result = MongoDB.insertNewDiary(diary = diary.apply {
+            val updatedDateTime = uiState.updatedDateTime
+            if (updatedDateTime != null) {
+                date = updatedDateTime
+            }
+        })
         if (result is RequestState.Success) {
             withContext(Dispatchers.Main) {
                 onSuccess()
@@ -110,7 +123,7 @@ class WriteViewModel(
         val selectedDiaryId = uiState.selectedDiaryId ?: return
         val result = MongoDB.updateDiary(diary = diary.apply {
             _id = ObjectId.invoke(selectedDiaryId)
-            date = uiState.selectedDiary?.date ?: date
+            date = uiState.updatedDateTime ?: uiState.selectedDiary?.date ?: date
         })
         if (result is RequestState.Success) {
             withContext(Dispatchers.Main) {
