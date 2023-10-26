@@ -1,5 +1,6 @@
 package com.example.diaryapp.navigation
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -185,8 +186,8 @@ fun NavGraphBuilder.writeRoute(
         val context = LocalContext.current
         val viewModel: WriteViewModel = viewModel()
         val uiState = viewModel.uiState
+        val galleryState = viewModel.galleryState
         val pagerState = rememberPagerState(pageCount = { Mood.values().size })
-        val galleryState = rememberGalleryState()
         val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
 
         WriteScreen(
@@ -231,12 +232,10 @@ fun NavGraphBuilder.writeRoute(
                 )
             },
             onImageSelect = {
-                galleryState.addImage(
-                    GalleryImage(
-                        image = it,
-                        remoteImagePath = "",
-                    )
-                )
+                val type = context.contentResolver.getType(it)
+                    ?.split("/")?.last() ?: "jpg"
+                Log.d("WriteViewModel", "uri: $it")
+                viewModel.addImage(image = it, imageType = type)
             }
         )
     }

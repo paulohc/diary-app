@@ -1,13 +1,14 @@
 package com.example.diaryapp.presentation.screens.write
 
+import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
 import com.example.diaryapp.data.repository.MongoDB
-import com.example.diaryapp.model.Diary
-import com.example.diaryapp.model.Mood
+import com.example.diaryapp.model.*
 import com.example.diaryapp.navigation.ParameterIds
-import com.example.diaryapp.model.RequestState
 import com.example.diaryapp.util.toRealmInstant
+import com.google.firebase.auth.FirebaseAuth
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
@@ -27,6 +28,7 @@ class WriteViewModel(
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
+    val galleryState = GalleryState()
     var uiState by mutableStateOf(UiState())
         private set
 
@@ -155,5 +157,17 @@ class WriteViewModel(
                 }
             }
         }
+    }
+
+    fun addImage(image: Uri, imageType: String) {
+        val remoteImagePath = "images/${FirebaseAuth.getInstance().currentUser?.uid}/" +
+                "${image.lastPathSegment}-${System.currentTimeMillis()}.$imageType"
+        Log.d("WriteViewModel", "remoteImagePath: $remoteImagePath")
+        galleryState.addImage(
+            GalleryImage(
+                image = image,
+                remoteImagePath = remoteImagePath,
+            )
+        )
     }
 }
