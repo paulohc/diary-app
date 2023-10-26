@@ -22,6 +22,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.diaryapp.model.*
 import com.example.diaryapp.presentation.components.GalleryUploader
+import io.realm.kotlin.ext.toRealmList
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -156,6 +157,8 @@ fun WriteContent(
                             Diary().apply {
                                 this.title = uiState.title
                                 this.description = uiState.description
+                                this.images =
+                                    galleryState.images.map { it.remoteImagePath }.toRealmList()
                             }
                         )
                     } else {
