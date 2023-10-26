@@ -8,6 +8,7 @@ import androidx.core.view.*
 import androidx.navigation.compose.*
 import com.example.diaryapp.navigation.*
 import com.example.diaryapp.ui.theme.*
+import com.google.firebase.FirebaseApp
 import io.realm.kotlin.mongodb.*
 
 class MainActivity : ComponentActivity() {
@@ -19,8 +20,9 @@ class MainActivity : ComponentActivity() {
             keepSplashOpened
         }
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        FirebaseApp.initializeApp(this)
         setContent {
-            DiaryAppTheme {
+            DiaryAppTheme(dynamicColor = false) {
                 val navController = rememberNavController()
                 SetupNavGraph(
                     startDestination = getStartDestination(),
