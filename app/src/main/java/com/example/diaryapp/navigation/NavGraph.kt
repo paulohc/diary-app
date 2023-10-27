@@ -9,6 +9,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
@@ -184,7 +185,7 @@ fun NavGraphBuilder.writeRoute(
 ) {
     composable(screen = Screen.Write) {
         val context = LocalContext.current
-        val viewModel: WriteViewModel = viewModel()
+        val viewModel: WriteViewModel = hiltViewModel()
         val uiState = viewModel.uiState
         val galleryState = viewModel.galleryState
         val pagerState = rememberPagerState(pageCount = { Mood.values().size })

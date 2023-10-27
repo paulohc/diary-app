@@ -4,6 +4,8 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.*
+import com.example.diaryapp.data.database.ImageToUploadDao
+import com.example.diaryapp.data.database.entity.ImageToUpload
 import com.example.diaryapp.data.repository.MongoDB
 import com.example.diaryapp.model.*
 import com.example.diaryapp.navigation.ParameterIds
@@ -13,11 +15,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import org.mongodb.kbson.ObjectId
 import java.time.ZonedDateTime
+import javax.inject.Inject
 
 data class UiState(
     val selectedDiaryId: String? = null,
@@ -28,8 +32,10 @@ data class UiState(
     val updatedDateTime: RealmInstant? = null,
 )
 
-class WriteViewModel(
+@HiltViewModel
+class WriteViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
+    private val imageToUploadDao: ImageToUploadDao,
 ) : ViewModel() {
 
     val galleryState = GalleryState()
@@ -196,6 +202,20 @@ class WriteViewModel(
         galleryState.images.forEach { galleryImage ->
             val imagePath = storage.child(galleryImage.remoteImagePath)
             imagePath.putFile(galleryImage.image)
+                .addOnProgressListener {
+                    val sessionUri = it.uploadSessionUri
+                    if (sessionUri != null) {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            imageToUploadDao.addImageToUpload(
+                                ImageToUpload(
+                                    remoteImagePath = galleryImage.remoteImagePath,
+                                    imageUri = galleryImage.image.toString(),
+                                    sessionUri = sessionUri.toString(),
+                                )
+                            )
+                        }
+                    }
+                }
         }
     }
 
