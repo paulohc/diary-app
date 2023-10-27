@@ -237,7 +237,10 @@ fun NavGraphBuilder.writeRoute(
                     ?.split("/")?.last() ?: "jpg"
                 Log.d("WriteViewModel", "uri: $it")
                 viewModel.addImage(image = it, imageType = type)
-            }
+            },
+            onImageDeleteClicked = {
+
+            },
         )
     }
 }

@@ -38,6 +38,7 @@ fun WriteContent(
     paddingValues: PaddingValues,
     onSaveClicked: (Diary) -> Unit,
     onImageSelect: (Uri) -> Unit,
+    onImageClicked: (GalleryImage) -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
@@ -144,7 +145,7 @@ fun WriteContent(
                 galleryState = galleryState,
                 onAddClicked = { focusManager.clearFocus() },
                 onImageSelect = onImageSelect,
-                onImageClicked = {},
+                onImageClicked = onImageClicked,
             )
             Spacer(modifier = Modifier.height(12.dp))
             Button(
