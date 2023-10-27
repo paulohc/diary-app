@@ -22,6 +22,7 @@ fun HomeScreen(
     drawerState: DrawerState,
     onMenuClicked: () -> Unit,
     onSignOutClicked: () -> Unit,
+    onDeleteAllClicked: () -> Unit,
     navigateToWrite: () -> Unit,
     navigateToWriteWithArgs: (String) -> Unit,
 ) {
@@ -30,6 +31,7 @@ fun HomeScreen(
     NavigationDrawer(
         drawerState = drawerState,
         onSignOutClicked = onSignOutClicked,
+        onDeleteAllClicked = onDeleteAllClicked,
     ) {
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -86,6 +88,7 @@ fun HomeScreen(
 fun NavigationDrawer(
     drawerState: DrawerState,
     onSignOutClicked: () -> Unit,
+    onDeleteAllClicked: () -> Unit,
     content: @Composable () -> Unit,
 ) {
     ModalNavigationDrawer(
@@ -111,7 +114,25 @@ fun NavigationDrawer(
                                 text = "Sign Out", color = MaterialTheme.colorScheme.onSurface
                             )
                         }
-                    }, selected = false, onClick = onSignOutClicked
+                    },
+                    selected = false,
+                    onClick = onSignOutClicked,
+                )
+                NavigationDrawerItem(
+                    label = {
+                        Row(modifier = Modifier.padding(horizontal = 12.dp)) {
+                            Image(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Delete All Icon",
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(
+                                text = "Delete All Diaries", color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    },
+                    selected = false,
+                    onClick = onDeleteAllClicked,
                 )
             }
         },
