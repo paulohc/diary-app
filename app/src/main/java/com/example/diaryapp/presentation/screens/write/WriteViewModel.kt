@@ -7,8 +7,11 @@ import androidx.lifecycle.*
 import com.example.diaryapp.data.repository.MongoDB
 import com.example.diaryapp.model.*
 import com.example.diaryapp.navigation.ParameterIds
+import com.example.diaryapp.util.fetchImagesFromFirebase
 import com.example.diaryapp.util.toRealmInstant
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.*
@@ -57,6 +60,20 @@ class WriteViewModel(
                                 setTitle(title = diary.data.title)
                                 setDescription(description = diary.data.description)
                                 setMood(mood = Mood.valueOf(diary.data.mood))
+
+                                fetchImagesFromFirebase(
+                                    remoteImagePaths = diary.data.images,
+                                    onImageDownload = { downloadedImage ->
+                                        galleryState.addImage(
+                                            GalleryImage(
+                                                image = downloadedImage,
+                                                remoteImagePath = extractImagePath(
+                                                    fullImageUrl = downloadedImage.toString()
+                                                )
+                                            )
+                                        )
+                                    }
+                                )
                             }
                         }
                     }
@@ -180,5 +197,11 @@ class WriteViewModel(
             val imagePath = storage.child(galleryImage.remoteImagePath)
             imagePath.putFile(galleryImage.image)
         }
+    }
+
+    private fun extractImagePath(fullImageUrl: String): String {
+        val chunks = fullImageUrl.split("%2F")
+        val imageName = chunks[2].split("?").first()
+        return "images/${Firebase.auth.currentUser?.uid}/$imageName"
     }
 }
