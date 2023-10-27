@@ -1,0 +1,1 @@
+C:\Users\Paulo Henrique\AndroidStudioProjects\DiaryApp\buildSrc\build\classes\kotlin\main\ProjectConfig.class

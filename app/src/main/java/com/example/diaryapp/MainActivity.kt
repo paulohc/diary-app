@@ -3,17 +3,21 @@ package com.example.diaryapp
 import android.os.*
 import androidx.activity.*
 import androidx.activity.compose.*
+import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.*
-import com.example.diaryapp.data.database.ImageToDeleteDao
-import com.example.diaryapp.data.database.ImageToUploadDao
 import com.example.diaryapp.navigation.*
-import com.example.diaryapp.ui.theme.*
-import com.example.diaryapp.util.retryDeletingImageFromFirebase
-import com.example.diaryapp.util.retryUploadingImageToFirebase
+import com.example.mongo.database.ImageToDeleteDao
+import com.example.mongo.database.ImageToUploadDao
+import com.example.mongo.database.entity.ImageToDelete
+import com.example.mongo.database.entity.ImageToUpload
+import com.example.ui.theme.DiaryAppTheme
+import com.example.util.Screen
 import com.google.firebase.FirebaseApp
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storageMetadata
 import dagger.hilt.android.AndroidEntryPoint
 import io.realm.kotlin.mongodb.*
 import kotlinx.coroutines.*
@@ -94,4 +98,25 @@ private fun getStartDestination(): String {
     } else {
         Screen.Authentication.buildRoute()
     }
+}
+
+fun retryUploadingImageToFirebase(
+    imageToUpload: ImageToUpload,
+    onSuccess: () -> Unit
+) {
+    val storage = FirebaseStorage.getInstance().reference
+    storage.child(imageToUpload.remoteImagePath).putFile(
+        imageToUpload.imageUri.toUri(),
+        storageMetadata { },
+        imageToUpload.sessionUri.toUri()
+    ).addOnSuccessListener { onSuccess() }
+}
+
+fun retryDeletingImageFromFirebase(
+    imageToDelete: ImageToDelete,
+    onSuccess: () -> Unit
+) {
+    val storage = FirebaseStorage.getInstance().reference
+    storage.child(imageToDelete.remoteImagePath).delete()
+        .addOnSuccessListener { onSuccess() }
 }

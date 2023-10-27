@@ -1,0 +1,82 @@
+[versions]
+android-gradle = "8.1.0"
+kotlin-android = "1.8.10"
+google-services = "4.3.15"
+devtools-ksp = "1.8.20-1.0.11"
+dotenv-gradle = "2.0.0"
+compose-bom = "2023.10.01"
+kotlin = "1.11.0"
+core-ktx = "1.12.0"
+lifecycle-runtime = "2.6.2"
+activity-compose = "1.8.0"
+junit = "4.13.2"
+junit-ext = "1.1.5"
+espresso = "3.5.1"
+compose-navigation = "2.7.4"
+firebase-bom = "32.5.0"
+room = "2.5.2"
+runtime-compose = "2.6.2"
+splash = "1.0.1"
+realm = "1.11.0"
+kotlin-coroutines-core = "1.7.1"
+dagger-hilt = "2.48"
+hilt-navigation-compose = "1.1.0"
+coil = "2.4.0"
+date-time-picker = "1.2.0"
+message-bar-compose = "1.0.5"
+one-tap-compose = "1.0.7"
+desugar = "2.0.4"
+
+[libraries]
+# Core
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx"}
+lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime"}
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose"}
+junit = { module = "junit:junit", version.ref = "junit"}
+junit-ext = { module = "androidx.test.ext:junit", version.ref = "junit-ext"}
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso"}
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines-core"}
+realm-sync = { module = "io.realm.kotlin:library-sync", version.ref = "realm"}
+
+# Compose
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-ui = { module = "androidx.compose.ui:ui"}
+compose-graphics = { module = "androidx.compose.ui:ui-graphics"}
+compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"}
+compose-material3 = { module = "androidx.compose.material3:material3"}
+compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4"}
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling"}
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest"}
+
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
+
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger-hilt"}
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger-hilt"}
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose"}
+
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom"}
+firebase-auth = { module = "com.google.firebase:firebase-auth-ktx"}
+firebase-storage = { module = "com.google.firebase:firebase-storage-ktx"}
+
+date-time-picker = { module = "com.maxkeppeler.sheets-compose-dialogs:core", version.ref = "date-time-picker"}
+date-dialog = { module = "com.maxkeppeler.sheets-compose-dialogs:calendar", version.ref = "date-time-picker"}
+time-dialog = { module = "com.maxkeppeler.sheets-compose-dialogs:clock", version.ref = "date-time-picker"}
+message-bar-compose = { module = "com.github.stevdza-san:MessageBarCompose", version.ref = "message-bar-compose"}
+one-tap-compose = { module = "com.github.stevdza-san:OneTapCompose", version.ref = "one-tap-compose"}
+
+splash-api = { module = "androidx.core:core-splashscreen", version.ref = "splash"}
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil"}
+desugar-jdk = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar"}
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-gradle" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+realm-sync = { id = "io.realm.kotlin", version.ref = "realm" }
+devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "devtools-ksp" }
+hilt-android  = { id = "com.google.dagger.hilt.android", version.ref = "dagger-hilt" }
+dot-env = { id = "co.uzzu.dotenv.gradle", version.ref = "dotenv-gradle" }

@@ -1,10 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id("com.android.application") version "8.1.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.10" apply false
-    id("co.uzzu.dotenv.gradle") version "2.0.0"
-    id ("io.realm.kotlin") version "1.11.0" apply false
-    id("com.google.gms.google-services") version "4.3.15" apply false
-    id("com.google.devtools.ksp") version "1.8.20-1.0.11" apply false
-    id("com.google.dagger.hilt.android") version "2.48" apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.realm.sync) apply false
+    alias(libs.plugins.devtools.ksp) apply false
+    alias(libs.plugins.hilt.android) apply false
+    alias(libs.plugins.dot.env)
 }
