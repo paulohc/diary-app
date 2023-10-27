@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.*
 import com.example.diaryapp.R
 import com.example.diaryapp.data.repository.Diaries
 import com.example.diaryapp.model.RequestState
+import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,6 +26,9 @@ fun HomeScreen(
     onDeleteAllClicked: () -> Unit,
     navigateToWrite: () -> Unit,
     navigateToWriteWithArgs: (String) -> Unit,
+    dateIsSelected: Boolean,
+    onDateSelected: (ZonedDateTime) -> Unit,
+    onDateReset: () -> Unit,
 ) {
     var padding by remember { mutableStateOf(PaddingValues()) }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -39,6 +43,9 @@ fun HomeScreen(
                 HomeTopBar(
                     scrollBehavior = scrollBehavior,
                     onMenuClicked = onMenuClicked,
+                    dateIsSelected = dateIsSelected,
+                    onDateSelected = onDateSelected,
+                    onDateReset = onDateReset,
                 )
             },
             floatingActionButton = {

@@ -150,12 +150,11 @@ fun NavGraphBuilder.homeRoute(
                     drawerState.open()
                 }
             },
-            onSignOutClicked = {
-                signOutDialogOpened = true
-            },
-            onDeleteAllClicked = {
-                deleteAllDialogOpened = true
-            },
+            dateIsSelected = viewModel.dateIsSelected,
+            onDateSelected = { viewModel.getDiaries(zonedDateTime = it) },
+            onDateReset = { viewModel.getDiaries() },
+            onSignOutClicked = { signOutDialogOpened = true },
+            onDeleteAllClicked = { deleteAllDialogOpened = true },
             navigateToWrite = navigateToWrite,
             navigateToWriteWithArgs = navigateToWriteWithArgs,
         )
@@ -199,7 +198,7 @@ fun NavGraphBuilder.homeRoute(
                             drawerState.close()
                         }
                     },
-                    onError =  {
+                    onError = {
                         Toast.makeText(
                             context,
                             if (it.message == "No Internet Connection.")
